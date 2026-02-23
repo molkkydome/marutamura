@@ -1,0 +1,9 @@
+{
+  "query": "\n-- 管理者ユーザーを作成（openIdはlocal-adminとして固定）\nINSERT INTO users (openId, name, nickname, loginMethod, role, createdAt, updatedAt, lastSignedIn)\nVALUES ('local-admin-owner', 'なか', 'なか', 'invite', 'admin', NOW(), NOW(), NOW())\nON DUPLICATE KEY UPDATE role = 'admin', nickname = 'なか';\n\n-- 管理者用の初期招待コード（ADMIN00001）を発行\n-- まず管理者のIDを取得してから挿入\nINSERT INTO invites (code, createdBy, isActive, createdAt)\nSELECT 'ADMIN00001', id, 1, NOW() FROM users WHERE openId = 'local-admin-owner'\nON DUPLICATE KEY UPDATE isActive = 1;\n",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 4ZmHdu82ux5f2QW.c3d39c925b52 --database WGmQ2j4fSkTPHTnnusDShA --execute \n-- 管理者ユーザーを作成（openIdはlocal-adminとして固定）\nINSERT INTO users (openId, name, nickname, loginMethod, role, createdAt, updatedAt, lastSignedIn)\nVALUES ('local-admin-owner', 'なか', 'なか', 'invite', 'admin', NOW(), NOW(), NOW())\nON DUPLICATE KEY UPDATE role = 'admin', nickname = 'なか';\n\n-- 管理者用の初期招待コード（ADMIN00001）を発行\n-- まず管理者のIDを取得してから挿入\nINSERT INTO invites (code, createdBy, isActive, createdAt)\nSELECT 'ADMIN00001', id, 1, NOW() FROM users WHERE openId = 'local-admin-owner'\nON DUPLICATE KEY UPDATE isActive = 1;\n",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 1869
+}
