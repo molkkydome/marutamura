@@ -1,0 +1,205 @@
+/* ===================================================
+   満願寺 御朱印帳 — Design System
+   Theme: 和紙と墨 (Washi & Sumi)
+   Colors: 和紙色 / 朱色 / 墨色
+   Fonts: Noto Serif JP (見出し) / Noto Sans JP (本文)
+   =================================================== */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  /* 和紙・朱色・墨のカラーパレット */
+  --washi: oklch(0.97 0.012 85);           /* 和紙色 */
+  --washi-dark: oklch(0.93 0.018 80);      /* 少し濃い和紙 */
+  --shu: oklch(0.52 0.22 28);             /* 朱色 */
+  --shu-light: oklch(0.65 0.18 28);       /* 薄い朱色 */
+  --shu-dark: oklch(0.40 0.20 28);        /* 濃い朱色 */
+  --sumi: oklch(0.18 0.01 60);            /* 墨色 */
+  --sumi-light: oklch(0.45 0.01 60);      /* 薄墨 */
+  --sumi-muted: oklch(0.65 0.01 60);      /* さらに薄い墨 */
+
+  --primary: var(--shu);
+  --primary-foreground: oklch(0.98 0 0);
+  --sidebar-primary: var(--shu);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --chart-1: var(--shu);
+  --chart-2: var(--shu-light);
+  --chart-3: var(--sumi);
+  --chart-4: var(--sumi-light);
+  --chart-5: var(--sumi-muted);
+  --radius: 0.25rem;
+
+  --background: var(--washi);
+  --foreground: var(--sumi);
+  --card: oklch(0.99 0.008 85);
+  --card-foreground: var(--sumi);
+  --popover: oklch(0.99 0.008 85);
+  --popover-foreground: var(--sumi);
+  --secondary: var(--washi-dark);
+  --secondary-foreground: var(--sumi);
+  --muted: var(--washi-dark);
+  --muted-foreground: var(--sumi-light);
+  --accent: oklch(0.90 0.025 28);
+  --accent-foreground: var(--shu-dark);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.85 0.015 75);
+  --input: oklch(0.88 0.012 75);
+  --ring: var(--shu);
+  --sidebar: oklch(0.95 0.015 80);
+  --sidebar-foreground: var(--sumi);
+  --sidebar-accent: oklch(0.90 0.025 28);
+  --sidebar-accent-foreground: var(--shu-dark);
+  --sidebar-border: oklch(0.85 0.015 75);
+  --sidebar-ring: var(--shu);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Noto Serif JP', serif;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  a[href],
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled) {
+    @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+      max-width: 1280px;
+    }
+  }
+
+  /* 和紙テクスチャ背景 */
+  .washi-texture {
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeBlend in='SourceGraphic' mode='multiply'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  /* 朱印スタンプアニメーション */
+  @keyframes stamp-press {
+    0% { transform: scale(1.4) rotate(-3deg); opacity: 0; }
+    40% { transform: scale(0.95) rotate(1deg); opacity: 1; }
+    60% { transform: scale(1.02) rotate(-0.5deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .stamp-animation {
+    animation: stamp-press 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes stamp-ripple {
+    0% { transform: scale(0.8); opacity: 0.8; }
+    100% { transform: scale(2.5); opacity: 0; }
+  }
+
+  .stamp-ripple {
+    animation: stamp-ripple 0.6s ease-out forwards;
+  }
+
+  /* 御朱印帳カードスタイル */
+  .goshuincho-card {
+    background: oklch(0.99 0.008 85);
+    border: 1px solid oklch(0.85 0.015 75);
+    box-shadow:
+      0 1px 3px oklch(0.18 0.01 60 / 0.08),
+      0 4px 12px oklch(0.18 0.01 60 / 0.06),
+      inset 0 1px 0 oklch(1 0 0 / 0.8);
+  }
+
+  .goshuincho-card:hover {
+    box-shadow:
+      0 2px 6px oklch(0.18 0.01 60 / 0.12),
+      0 8px 20px oklch(0.18 0.01 60 / 0.10),
+      inset 0 1px 0 oklch(1 0 0 / 0.8);
+  }
+
+  /* 朱色のアクセントライン */
+  .shu-border-left {
+    border-left: 3px solid oklch(0.52 0.22 28);
+  }
+
+  /* 薄い朱色の背景 */
+  .shu-bg-light {
+    background: oklch(0.96 0.02 28);
+  }
+}
