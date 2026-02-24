@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { sponsorPlans, type SponsorPlan } from "@/data/sponsors";
+import { useAuth } from "@/contexts/AuthContext";
 
 // ローカルストレージキー（管理ページと共有）
 const STORAGE_KEY = "petit-sponsor-sponsors";
@@ -178,11 +179,13 @@ function PlanCard({
 function ApplicationForm({
   selectedPlan,
   onClose,
+  defaultName = "",
 }: {
   selectedPlan: SponsorPlan | null;
   onClose: () => void;
+  defaultName?: string;
 }) {
-  const [name, setName] = useState("");
+  const [name, setName] = useState(defaultName);
   const [period, setPeriod] = useState<"early" | "late" | "">("");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -494,6 +497,7 @@ function Modal({
 
 // メインコンポーネント
 export default function Home() {
+  const { status: authStatus, user, logout } = useAuth();
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [sponsorData, setSponsorData] = useState<Record<string, string[]>>(loadSponsors);
@@ -516,11 +520,60 @@ export default function Home() {
     }
   };
 
+  // SSOトークン検証中はローディング表示
+  if (authStatus === "loading") {
+    return (
+      <div
+        className="washi-bg min-h-screen flex flex-col items-center justify-center"
+        style={{ maxWidth: "480px", margin: "0 auto" }}
+      >
+        <div
+          className="stamp-badge mb-4"
+          style={{ borderColor: "#C8773A", color: "#C8773A", width: "64px", height: "64px" }}
+        >
+          <span style={{ fontSize: "1.6rem", fontWeight: 700 }}>5</span>
+          <span style={{ fontSize: "0.65rem" }}>マルタ</span>
+        </div>
+        <p className="handwritten text-lg" style={{ color: "#8A6A48" }}>
+          読み込み中...
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div
       className="washi-bg min-h-screen"
       style={{ maxWidth: "480px", margin: "0 auto" }}
     >
+      {/* SSOログイン済みバナー */}
+      {authStatus === "authenticated" && user && (
+        <div
+          className="flex items-center justify-between px-4 py-2.5"
+          style={{
+            backgroundColor: "#F0F8F0",
+            borderBottom: "1px solid #C8E0C8",
+          }}
+        >
+          <div className="flex items-center gap-2">
+            <span style={{ fontSize: "1rem" }}>🌿</span>
+            <span className="text-sm font-bold" style={{ color: "#3A7A3A" }}>
+              {user.name}
+            </span>
+            <span className="text-xs" style={{ color: "#6A9A6A" }}>
+              さん（マルタ村から）
+            </span>
+          </div>
+          <button
+            onClick={logout}
+            className="text-xs px-2.5 py-1 rounded-full"
+            style={{ backgroundColor: "#E0F0E0", color: "#5A8A5A" }}
+          >
+            ログアウト
+          </button>
+        </div>
+      )}
+
       {/* ヒーローセクション */}
       <section className="relative overflow-hidden">
         <img
@@ -780,6 +833,7 @@ export default function Home() {
         <ApplicationForm
           selectedPlan={selectedPlan}
           onClose={() => setIsFormOpen(false)}
+          defaultName={user?.name ?? ""}
         />
       </Modal>
     </div>
